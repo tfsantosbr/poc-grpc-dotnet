@@ -1,0 +1,6 @@
+@host = http://localhost:5001
+
+GET {{host}}/companies/12345678000199
+Accept: application/json
+
+###
