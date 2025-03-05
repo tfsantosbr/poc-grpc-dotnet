@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "Companies.External.Api.Protos";
+
+package companies;
+
+service CompanyService {
+  rpc GetCompanyByCnpj (GetCompanyByCnpjRequest) returns (GetCompanyByCnpjResponse);
+}
+
+message GetCompanyByCnpjRequest {
+  string cnpj = 1;
+}
+
+message GetCompanyByCnpjResponse {
+  string cnpj = 1;
+  string name = 2;
+}
