@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Companies.External.Api.Protos";
+option csharp_namespace = "Companies.Protos";
 
 package companies;
 

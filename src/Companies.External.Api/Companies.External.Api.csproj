@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\companies.proto" GrpcServices="Server" />
+    <ProjectReference Include="..\Companies.Protos\Companies.Protos.csproj" />
   </ItemGroup>
 
 </Project>

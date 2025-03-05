@@ -1,4 +1,4 @@
-using Companies.External.Api.Protos;
+using Companies.Protos;
 using Grpc.Core;
 
 namespace Companies.External.Api.Services;
