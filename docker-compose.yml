@@ -1,27 +1,29 @@
 services:
   companies-external-api:
     build:
-      context: ./src/Companies.External.Api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Companies.External.Api/Dockerfile
     ports:
       - "5000:8080"
+      - "5001:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
-      - poc-grpc-dotnet
+      - grpc-network
 
   companies-api:
     build:
-      context: ./src/Companies.Api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Companies.Api/Dockerfile
     ports:
-      - "5001:8080"
+      - "5002:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - companies-external-api
     networks:
-      - poc-grpc-dotnet
+      - grpc-network
 
 networks:
-  poc-grpc-dotnet:
-    name: poc-grpc-dotnet
+  grpc-network:
     driver: bridge
