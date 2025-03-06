@@ -1,16 +1,24 @@
 using System.Text.Json;
 using Companies.Protos;
-using Grpc.Net.Client;
+using static Companies.Protos.CompanyService;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration; ;
+var configuration = builder.Configuration;
 
 builder.Services.AddHttpClient("CompaniesExternalApi", client =>
 {
     var baseAddress = configuration["CompaniesExternalApi:BaseAddress"]
-        ?? throw new InvalidOperationException("Base address for CompaniesExternalApi is not configured.");
+        ?? throw new InvalidOperationException("Base address for 'CompaniesExternalApi' is not configured.");
 
     client.BaseAddress = new Uri(baseAddress);
+});
+
+builder.Services.AddGrpcClient<CompanyServiceClient>(client =>
+{
+    var baseAddress = configuration["CompaniesExternalGrpc:BaseAddress"]
+        ?? throw new InvalidOperationException("Base address for 'CompaniesExternalGrpc' is not configured.");
+
+    client.Address = new Uri(baseAddress);
 });
 
 var app = builder.Build();
@@ -29,13 +37,9 @@ app.MapGet("/companies/{cnpj}/rest", async (string cnpj, IHttpClientFactory http
     return Results.Json(company);
 });
 
-app.MapGet("/companies/{cnpj}/grpc", async (string cnpj, IHttpClientFactory httpClientFactory) =>
+app.MapGet("/companies/{cnpj}/grpc", async (string cnpj, CompanyServiceClient companyServiceClient) =>
 {
-    // Configura o canal gRPC
-    using var channel = GrpcChannel.ForAddress("http://companies-external-api:8081");
-    var client = new CompanyService.CompanyServiceClient(channel);
-
-    var company = await client.GetCompanyByCnpjAsync(
+    var company = await companyServiceClient.GetCompanyByCnpjAsync(
         new GetCompanyByCnpjRequest { Cnpj = cnpj }
     );
 

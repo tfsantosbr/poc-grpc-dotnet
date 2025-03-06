@@ -1,6 +1,10 @@
 @host = http://localhost:5001
 
-GET {{host}}/companies/12345678000199
+GET {{host}}/companies/12345678000199/rest
+Accept: application/json
+###
+
+GET {{host}}/companies/12345678000199/grpc
 Accept: application/json
 
 ###

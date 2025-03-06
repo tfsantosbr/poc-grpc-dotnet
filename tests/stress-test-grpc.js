@@ -17,7 +17,7 @@ function getRandomCnpj() {
 
 export default function () {
   let cnpj = getRandomCnpj();
-  let res = http.get(`http://localhost:5001/companies/${cnpj}`);
+  let res = http.get(`http://localhost:5001/companies/${cnpj}/grpc`);
   check(res, { "status was 200": (r) => r.status == 200 });
   sleep(1);
 }
